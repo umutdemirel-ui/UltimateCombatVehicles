@@ -63,6 +63,8 @@ ForgeGradle downloads Minecraft, Forge userdev, and mappings from:
 
 A locked-down network that blocks those hosts cannot compile or launch the game. The Gradle Wrapper JAR is committed; the Gradle distribution is not.
 
+Phase 1 was verified on GitHub Actions (`ubuntu-latest`, JDK 21 Temurin): `build` produced the mod JAR and `runServer` logged `[UCV] Common setup complete`. See `.github/workflows/build.yml`.
+
 ## Adding a system
 
 1. Put rules and data types in `com.ucv.common.*`.
