@@ -13,7 +13,13 @@ Bu depo MrCrayfish veya başka bir moddan kod, model, texture veya ses kopyalama
 
 ## Durum (Phase 1)
 
-Forge 1.21.1 proje iskeleti kuruludur. Mod yüklenince log’a `[UCV]` mesajları basar. Silah ve araç sistemleri sonraki phase’lerde eklenir.
+Forge 1.21.1 proje iskeleti kuruludur ve **doğrulanmıştır**.
+
+- `./gradlew build` → JAR üretildi (`ultimatecombatvehicles-0.1.0.jar`)
+- `./gradlew runServer` → development dedicated server açıldı, log’da `[UCV] Common setup complete` görüldü
+- CI: [Build run 34626770347](https://github.com/umutdemirel-ui/UltimateCombatVehicles/actions/runs/34626770347) **success** (7m5s)
+
+Mod yüklenince log’a `[UCV]` mesajları basar. Silah ve araç sistemleri sonraki phase’lerde eklenir.
 
 ## Gereksinimler
 
