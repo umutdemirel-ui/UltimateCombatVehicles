@@ -1,6 +1,7 @@
 package com.ucv;
 
 import com.mojang.logging.LogUtils;
+import com.ucv.registry.UCVRegistries;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -20,11 +21,13 @@ public final class UltimateCombatVehicles {
 
     public UltimateCombatVehicles(FMLJavaModLoadingContext context) {
         IEventBus modBus = context.getModEventBus();
+        UCVRegistries.register(modBus);
         modBus.addListener(this::onCommonSetup);
         LOGGER.info("[UCV] Ultimate Combat & Vehicles loading (id '{}')", UCV.MOD_ID);
     }
 
     private void onCommonSetup(final FMLCommonSetupEvent event) {
+        UCVRegistries.logSummary();
         LOGGER.info("[UCV] Common setup complete");
         LOGGER.info("[UCV] Network initialized");
     }

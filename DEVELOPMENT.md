@@ -9,10 +9,14 @@ src/main/java/com/ucv/
   client/                       Dist.CLIENT only
   server/                       server lifecycle / future validation
   common/                       version-agnostic gameplay contracts
+    item/UCVItemCategory        creative-tab groups (no MC types)
     weapons/
     vehicles/
     network/
-  registry/                     Forge 1.21.x DeferredRegister bindings
+  registry/
+    UCVRegistries               boot order + summary log
+    ModItems / ModBlocks / ModEntities / ModSounds / ModMenus / ModParticles
+    ModCreativeTabs             single "Ultimate Combat & Vehicles" tab
   util/
 ```
 
@@ -50,7 +54,7 @@ Change versions in `gradle.properties` only. `mods.toml` and `pack.mcmeta` are e
 ./gradlew --refresh-dependencies
 ```
 
-Low-RAM machines: `org.gradle.jvmargs` is already `-Xmx2G`. Drop to `-Xmx1536M` if the daemon is killed.
+Low-RAM machines: `org.gradle.jvmargs` is `-Xmx3G`. Drop to `-Xmx1536M` if the process is killed.
 
 ## Network / first setup
 

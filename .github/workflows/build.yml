@@ -60,8 +60,11 @@ jobs:
           timeout 240 ./gradlew runServer --no-daemon --stacktrace 2>&1 | tee gradle-server.log
           status=${PIPESTATUS[0]}
           set -e
-          if grep -q "\[UCV\] Common setup complete" gradle-server.log; then
-            echo "UCV loaded on development server"
+          if grep -q "\[UCV\] Common setup complete" gradle-server.log \
+             && grep -q "\[UCV\] Registry architecture ready" gradle-server.log \
+             && grep -q "\[UCV\] Registered 1 creative tabs" gradle-server.log; then
+            echo "UCV loaded on development server with registry architecture"
+            grep "\[UCV\] Registered" gradle-server.log || true
             exit 0
           fi
           echo "::error::Development server did not log UCV common setup"
