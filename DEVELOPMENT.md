@@ -10,9 +10,10 @@ src/main/java/com/ucv/
   server/                       server lifecycle / future validation
   common/                       version-agnostic gameplay contracts
     item/UCVItemCategory        creative-tab groups (no MC types)
-    weapons/
+    weapons/                    FireMode, AmmoType, WeaponProperties, WeaponState, WeaponManager
     vehicles/
     network/
+  weapons/                      BaseWeapon, datapack loader (1.21.x)
   registry/
     UCVRegistries               boot order + summary log
     ModItems / ModBlocks / ModEntities / ModSounds / ModMenus / ModParticles
@@ -75,6 +76,25 @@ Phase 1 was verified on GitHub Actions (`ubuntu-latest`, JDK 21 Temurin): `build
 2. Bind items/entities in `com.ucv.registry`.
 3. Send packets as input only; compute damage/fuel/inventory on the server.
 4. Do not copy assets or code from other mods.
+
+### Adding a weapon (not done in Phase 3)
+
+```java
+public static final RegistryObject<Item> PISTOL = ModItems.registerWeapon(
+        WeaponProperties.builder("pistol")
+                .type(WeaponType.PISTOL)
+                .damage(7)
+                .magazineSize(15)
+                .roundsPerMinute(150)
+                .reloadTimeTicks(40)
+                .range(48)
+                .recoil(0.7f)
+                .spread(1.1f)
+                .ammoType(AmmoType.PISTOL_AMMO)
+                .build());
+```
+
+Or drop `data/ucv/weapons/pistol.json` using the same field names. Datapack ids override code ids.
 
 ## Logging
 

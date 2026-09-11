@@ -1,4 +1,13 @@
 {
   "mod.ucv.name": "Ultimate Combat & Vehicles",
-  "itemGroup.ucv": "Ultimate Combat & Vehicles"
+  "itemGroup.ucv": "Ultimate Combat & Vehicles",
+  "ucv.weapon.fire_mode.semi_auto": "Semi-auto",
+  "ucv.weapon.fire_mode.burst": "Burst",
+  "ucv.weapon.fire_mode.full_auto": "Full-auto",
+  "ucv.weapon.ammo_type.pistol_ammo": "Pistol ammo",
+  "ucv.weapon.ammo_type.rifle_ammo": "Rifle ammo",
+  "ucv.weapon.ammo_type.shotgun_shell": "Shotgun shell",
+  "ucv.weapon.ammo_type.sniper_ammo": "Sniper ammo",
+  "ucv.weapon.tooltip.ammo": "Ammo: %s / %s",
+  "ucv.weapon.tooltip.fire_mode": "Fire mode: %s"
 }

@@ -29,7 +29,7 @@ jobs:
         run: |
           set -o pipefail
           chmod +x ./gradlew
-          ./gradlew build --stacktrace --no-daemon 2>&1 | tee gradle-build.log
+          ./gradlew test build --stacktrace --no-daemon 2>&1 | tee gradle-build.log
 
       - name: Publish gradle errors
         if: failure()
@@ -62,9 +62,10 @@ jobs:
           set -e
           if grep -q "\[UCV\] Common setup complete" gradle-server.log \
              && grep -q "\[UCV\] Registry architecture ready" gradle-server.log \
-             && grep -q "\[UCV\] Registered 1 creative tabs" gradle-server.log; then
-            echo "UCV loaded on development server with registry architecture"
-            grep "\[UCV\] Registered" gradle-server.log || true
+             && grep -q "\[UCV\] Registered 1 creative tabs" gradle-server.log \
+             && grep -q "\[UCV\] Weapon framework ready" gradle-server.log; then
+            echo "UCV loaded on development server with weapon framework"
+            grep "\[UCV\]" gradle-server.log | head -n 40 || true
             exit 0
           fi
           echo "::error::Development server did not log UCV common setup"

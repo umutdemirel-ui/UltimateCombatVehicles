@@ -1,4 +1,13 @@
 {
   "mod.ucv.name": "Ultimate Combat & Vehicles",
-  "itemGroup.ucv": "Ultimate Combat & Vehicles"
+  "itemGroup.ucv": "Ultimate Combat & Vehicles",
+  "ucv.weapon.fire_mode.semi_auto": "Yarı otomatik",
+  "ucv.weapon.fire_mode.burst": "Seri",
+  "ucv.weapon.fire_mode.full_auto": "Tam otomatik",
+  "ucv.weapon.ammo_type.pistol_ammo": "Tabanca mermisi",
+  "ucv.weapon.ammo_type.rifle_ammo": "Tüfek mermisi",
+  "ucv.weapon.ammo_type.shotgun_shell": "Av tüfeği fişeği",
+  "ucv.weapon.ammo_type.sniper_ammo": "Keskin nişancı mermisi",
+  "ucv.weapon.tooltip.ammo": "Mermi: %s / %s",
+  "ucv.weapon.tooltip.fire_mode": "Atış modu: %s"
 }

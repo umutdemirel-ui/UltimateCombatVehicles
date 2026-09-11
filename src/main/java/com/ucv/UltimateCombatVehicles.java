@@ -1,6 +1,8 @@
 package com.ucv;
 
 import com.mojang.logging.LogUtils;
+import com.ucv.common.weapons.WeaponFramework;
+import com.ucv.common.weapons.WeaponManager;
 import com.ucv.registry.UCVRegistries;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +29,11 @@ public final class UltimateCombatVehicles {
     }
 
     private void onCommonSetup(final FMLCommonSetupEvent event) {
+        WeaponFramework.verify();
         UCVRegistries.logSummary();
+        LOGGER.info("[UCV] Weapon framework ready ({} code, {} datapack definitions)",
+                WeaponManager.codeDefinitionCount(),
+                WeaponManager.dataPackDefinitionCount());
         LOGGER.info("[UCV] Common setup complete");
         LOGGER.info("[UCV] Network initialized");
     }

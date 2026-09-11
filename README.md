@@ -11,14 +11,15 @@ Minecraft **1.21.1** için özgün bir **Forge** silah + araç + ekipman modu.
 
 Bu depo MrCrayfish veya başka bir moddan kod, model, texture veya ses kopyalamaz. Tüm içerik özgün olacaktır.
 
-## Durum (Phase 2)
+## Durum (Phase 3)
 
-Forge 1.21.1 iskeleti + merkezi registry mimarisi.
+Weapon framework hazır; **5 silah henüz kayıtlı değil**.
 
-- `ModItems` / `ModBlocks` / `ModEntities` / `ModSounds` / `ModMenus` / `ModParticles` / `ModCreativeTabs`
-- Creative tab: **Ultimate Combat & Vehicles** (`itemGroup.ucv`)
-- Yeni içerik tek satırlık `register(...)` helper’ları ile eklenir
-- Silah ve araç item’ları Phase 3+ içinde bu kayıtlara bağlanacak
+- `WeaponProperties` + builder (damage, fire rate, magazine, reload, range, recoil, spread, …)
+- `FireMode` (`SEMI_AUTO` / `BURST` / `FULL_AUTO`), `AmmoType`, `WeaponType`, `WeaponState`
+- `BaseWeapon` (ortak item), `ModItems.registerWeapon(properties)`
+- Datapack şeması: `data/ucv/weapons/*.json`
+- Attachment slot + ADS alanları ileride doldurulmak üzere mevcut
 
 ## Gereksinimler
 
@@ -57,11 +58,11 @@ Başarılı build çıktısı: `build/libs/ultimatecombatvehicles-0.1.0.jar`
 
 İlk `runServer` öncesi `run/eula.txt` içinde `eula=true` olmalıdır.
 
-## Kontroller (Phase 2)
+## Kontroller (Phase 3)
 
-- Mods menüsünde **Ultimate Combat & Vehicles** görünür
-- Creative inventory’de aynı isimli tab vardır (silahlar eklenince dolacak)
-- Server log: `[UCV] Registry architecture ready` ve `[UCV] Registered 1 creative tabs`
+- `./gradlew test` — weapon properties / state / JSON parser
+- Server log: `[UCV] Weapon framework ready`
+- Creative tab boş (silah item’ları sonraki phase)
 
 ## Config
 
@@ -74,7 +75,7 @@ Mimari client = input / görsel, server = doğrulama + gameplay olacak şekilde 
 ## Bilinen kısıtlar
 
 - İlk sürüm yalnızca Minecraft **1.21.1 Forge** hedefler. 1.20.x adaptörü daha sonra eklenecek.
-- Silah, mermi, araç, GUI ve asset’ler henüz yok (Phase 3+).
+- Beş silah, mermi item’ları, ateş etme ve araçlar henüz yok (Phase 4+).
 
 ## Gelecek özellikler
 

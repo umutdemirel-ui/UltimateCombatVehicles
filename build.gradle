@@ -63,6 +63,14 @@ dependencies {
 
     // Mojang ships jopt-simple 5.0.4; some transitive deps request 6.x and break the classpath.
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'com.google.code.gson:gson:2.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
 }
 
 tasks.named('processResources', ProcessResources).configure {

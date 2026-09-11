@@ -2,6 +2,9 @@ package com.ucv.registry;
 
 import com.ucv.UCV;
 import com.ucv.common.item.UCVItemCategory;
+import com.ucv.common.weapons.WeaponManager;
+import com.ucv.common.weapons.WeaponProperties;
+import com.ucv.weapons.BaseWeapon;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -39,6 +42,14 @@ public final class ModItems {
 
     public static RegistryObject<Item> registerSimple(String name, UCVItemCategory category) {
         return register(name, category, () -> new Item(new Item.Properties()));
+    }
+
+    /**
+     * One-call weapon registration: properties table + {@link BaseWeapon} item.
+     */
+    public static RegistryObject<Item> registerWeapon(WeaponProperties properties) {
+        WeaponManager.register(properties);
+        return register(properties.id(), UCVItemCategory.WEAPONS, () -> new BaseWeapon(properties));
     }
 
     public static Collection<RegistryObject<Item>> entries(UCVItemCategory category) {
