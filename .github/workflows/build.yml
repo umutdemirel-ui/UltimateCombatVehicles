@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,11 +26,46 @@ jobs:
       - name: Build mod
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4G
-        run: ./gradlew build --stacktrace --no-daemon
+        run: |
+          set -o pipefail
+          chmod +x ./gradlew
+          ./gradlew build --stacktrace --no-daemon 2>&1 | tee gradle-build.log
+
+      - name: Publish gradle errors
+        if: failure()
+        run: |
+          echo "::group::gradle-build.log"
+          cat gradle-build.log || true
+          echo "::endgroup::"
+          tail -n 60 gradle-build.log | while IFS= read -r line; do
+            echo "::error::$line"
+          done
 
       - name: Upload JAR
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ultimatecombatvehicles-jar
           path: build/libs/*.jar
           if-no-files-found: error
+
+      - name: Boot development server
+        if: success()
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4G
+        run: |
+          mkdir -p run
+          echo "eula=true" > run/eula.txt
+          set +e
+          timeout 240 ./gradlew runServer --no-daemon --stacktrace 2>&1 | tee gradle-server.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if grep -q "\[UCV\] Common setup complete" gradle-server.log; then
+            echo "UCV loaded on development server"
+            exit 0
+          fi
+          echo "::error::Development server did not log UCV common setup"
+          tail -n 80 gradle-server.log | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+          exit 1

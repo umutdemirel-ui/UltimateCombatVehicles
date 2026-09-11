@@ -33,8 +33,8 @@ forge/1.20.1/    future
 |--------------|--------------------------------|
 | Minecraft    | 1.21.1                         |
 | Forge        | 52.1.16                        |
-| ForgeGradle  | 7.x (`[7.0.3,8)`)              |
-| Gradle       | 8.12.1 (wrapper)               |
+| ForgeGradle  | 6.x (`[6.0.24,6.2)`)           |
+| Gradle       | 8.8 (wrapper)                  |
 | Java         | 21                             |
 | Mappings     | official 1.21.1                |
 | Mod ID       | ucv                            |

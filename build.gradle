@@ -1,41 +1,52 @@
-import org.gradle.language.jvm.tasks.ProcessResources
-
 plugins {
     id 'java'
-    id 'idea'
     id 'eclipse'
-    id 'net.minecraftforge.gradle' version '[7.0.3,8)'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
 }
 
 version = mod_version
 group = mod_group_id
-base.archivesName = archives_base_name
+
+base {
+    archivesName = archives_base_name
+}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 println "[UCV] Building ${mod_name} ${version} for Minecraft ${minecraft_version} / Forge ${forge_version}"
+println "[UCV] Java: ${System.getProperty('java.version')}"
 
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
+    reobf = false
+    copyIdeResources = true
 
     runs {
         configureEach {
-            workingDir = layout.projectDirectory.dir('run')
-            systemProperty 'forge.enabledGameTestNamespaces', mod_id
-            systemProperty 'forge.logging.console.level', 'info'
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
         }
 
-        register('client')
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
 
-        register('server') {
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
         }
 
-        register('data') {
-            workingDir = layout.projectDirectory.dir('run-data')
-            args '--mod', mod_id, '--all',
-                    '--output', layout.projectDirectory.dir('src/generated/resources'),
-                    '--existing', layout.projectDirectory.dir('src/main/resources')
+        data {
+            workingDirectory project.file('run-data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
@@ -43,19 +54,13 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    minecraft.mavenizer(it)
-    maven fg.forgeMaven
-    maven fg.minecraftLibsMaven
-    mavenCentral()
 }
 
 dependencies {
-    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-}
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    options.release = 21
+    // Mojang ships jopt-simple 5.0.4; some transitive deps request 6.x and break the classpath.
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -74,7 +79,7 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties
+        expand replaceProperties + [project: project]
     }
 }
 
@@ -91,12 +96,36 @@ tasks.named('jar', Jar).configure {
     }
 }
 
-idea.module {
-    downloadJavadoc = true
-    downloadSources = true
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url = "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
 }
 
-eclipse.classpath {
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+eclipse {
+    synchronizationTasks 'genEclipseRuns'
+}
+
+// Java expects module classes+resources in one directory.
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/${it.name}")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
+}
+
+idea.module {
     downloadJavadoc = true
     downloadSources = true
 }
